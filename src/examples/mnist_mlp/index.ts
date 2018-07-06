@@ -1,3 +1,8 @@
+// Trains a simple deep NN on the MNIST dataset.
+// Gets to 98.40% test accuracy after 20 epochs
+// (there is *a lot* of margin for parameter tuning).
+// 17 seconds per epoch.
+
 import * as tf from '@tensorflow/tfjs'
 import { MnistData } from './data'
 import { ChartBatchLog, ChartEpochLog } from '../../utils/charts'
@@ -46,10 +51,11 @@ async function train (data: MnistData) {
   console.log('testY.shape:', testY.shape)
   console.groupEnd()
 
+  console.time('Totol training time')
   const history = await model.fit(trainX, trainY, {
     validationData: [testX, testY],
     batchSize: 128,
-    epochs: 20,
+    epochs: 5,
     callbacks: {
       onBatchEnd: (epoch: number, log) => {
         console.log('batch:', epoch, log)
@@ -57,11 +63,13 @@ async function train (data: MnistData) {
         return tf.nextFrame()
       },
       onEpochBegin: (epoch, log) => {
+        console.time('Epoch training time')
         console.groupCollapsed('epoch times:', epoch)
         return tf.nextFrame()
       },
       onEpochEnd: (epoch, log) => {
         console.groupEnd()
+        console.timeEnd('Epoch training time')
         console.log(epoch, log)
         chartEpoch.updata(log)
         return tf.nextFrame()
@@ -69,7 +77,10 @@ async function train (data: MnistData) {
     }
   })
 
-  console.log('history', history)
+  const score = model.evaluate(testX, testY)
+  console.timeEnd('Totol training time')
+  score[0].print()
+  score[1].print()
 }
 
 async function load () {
