@@ -1,8 +1,13 @@
+// Trains a simple deep NN on the MNIST dataset.
+// Gets to 75% test accuracy after 6 epochs
+// (there is *a lot* of margin for parameter tuning).
+// 110 seconds per epoch.
+
 import * as tf from '@tensorflow/tfjs'
 import { Cifar10 } from '../../datasets/cifar10'
 import { ChartBatchLog, ChartEpochLog } from '../../utils/charts'
 
-const BATCH_SIZE = 16
+const BATCH_SIZE = 32
 
 const model = tf.sequential()
 model.add(tf.layers.conv2d({
@@ -64,7 +69,7 @@ async function train (data: Cifar10) {
   const history = await model.fit(
     x.reshape([50000, 32, 32, 3]), y, {
       batchSize: BATCH_SIZE,
-      epochs: 50,
+      epochs: 6,
       callbacks: {
         onBatchEnd: (epoch: number, log) => {
           console.log('batch:', epoch, log)
