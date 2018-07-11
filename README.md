@@ -2,7 +2,9 @@
 
 ## Vision models examples
 
-[mnist_mlp.py](src/examples/mnist_mlp/index.ts)
+[mnist_mlp](src/examples/mnist_mlp/index.ts)
+[mnist_cnn](src/examples/mnist_cnn/index.ts)
+[cifar10_cnn](src/examples/cifar10_cnn/index.ts)
 Trains a simple deep multi-layer perceptron on the MNIST dataset.
 
 # How to use

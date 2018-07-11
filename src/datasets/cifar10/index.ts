@@ -15,4 +15,5 @@ export class Cifar10 extends DataSet {
   TEST_LABLES = '/datasets/cifar10/test_lables.json'
   IMG_WIDTH = 32
   IMG_HEIGHT = 32
+  NUM_CLASSES = 10
 }
