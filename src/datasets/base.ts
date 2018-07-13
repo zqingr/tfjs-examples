@@ -8,13 +8,14 @@ export class DataSet {
   readonly TEST_IMAGES: string[]
   readonly TEST_LABLES: string
   readonly NUM_CLASSES: number
+  readonly DATA_PRE_NUM: number = 10000
 
   get IMAGE_SIZE () {
     return this.IMG_WIDTH * this.IMG_HEIGHT * 3
   }
 
-  trainDatas: Float32Array
-  testDatas: Float32Array
+  trainDatas: Float32Array[]
+  testDatas: Float32Array[]
   trainLables: number[]
   testLables: number[]
 
@@ -27,16 +28,16 @@ export class DataSet {
 
   currentTrainIndex: number = 0
 
-  float32Concat (first:Float32Array, second: Float32Array) {
-    const firstLength = first.length
+  // float32Concat (first:Float32Array, second: Float32Array) {
+  //   const firstLength = first.length
 
-    const result = new Float32Array(firstLength + second.length)
+  //   const result = new Float32Array(firstLength + second.length)
 
-    result.set(first)
-    result.set(second, firstLength)
+  //   result.set(first)
+  //   result.set(second, firstLength)
 
-    return result
-  }
+  //   return result
+  // }
 
   loadImg (src: string): Promise<Float32Array> {
     return new Promise((resolve, reject) => {
@@ -67,10 +68,10 @@ export class DataSet {
     })
   }
 
-  loadImages (srcs: string[]): Promise<any> {
+  loadImages (srcs: string[]): Promise<Float32Array[]> {
     return Promise.all(srcs.map(this.loadImg))
-      .then(async imgsBytesView => imgsBytesView
-        .reduce((preView, currentView) => this.float32Concat(preView, currentView)))
+    // .then(async imgsBytesView => imgsBytesView
+    //   .reduce((preView, currentView) => this.float32Concat(preView, currentView)))
   }
 
   async load () {
@@ -89,7 +90,7 @@ export class DataSet {
     this.testIndices = tf.util.createShuffledIndices(this.testM)
   }
 
-  nextBatch (batchSize: number, [data, lables]: [Float32Array, number[]], index: Function) {
+  nextBatch (batchSize: number, [data, lables]: [Float32Array[], number[]], index: Function) {
     const batchImagesArray = new Float32Array(batchSize * this.IMAGE_SIZE)
     const batchLabelsArray = new Uint8Array(batchSize * this.NUM_CLASSES)
 
@@ -97,9 +98,11 @@ export class DataSet {
 
     for (let i = 0; i < batchSize; i++) {
       const idx = index()
+      const currentIdx = idx % this.DATA_PRE_NUM
+      const dataIdx = Math.floor(idx / this.DATA_PRE_NUM)
 
       const image =
-          data.slice(idx * this.IMAGE_SIZE, idx * this.IMAGE_SIZE + this.IMAGE_SIZE)
+          data[dataIdx].slice(currentIdx * this.IMAGE_SIZE, currentIdx * this.IMAGE_SIZE + this.IMAGE_SIZE)
       batchImagesArray.set(image, i * this.IMAGE_SIZE)
       batchLables.push(lables[idx])
     }
