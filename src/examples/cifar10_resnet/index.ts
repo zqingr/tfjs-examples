@@ -2,6 +2,8 @@ import * as tf from '@tensorflow/tfjs'
 import { Cifar10 } from '../../datasets/cifar10'
 import { ChartBatchLog, ChartEpochLog } from '../../utils/charts'
 
+import { resnetV2 } from 'tfjs-applications'
+
 function resnetBlock (x: tf.SymbolicTensor, f: number, [f1, f2, f3]: [number, number, number], stage: number, block: string, s?: number) {
   // defining name basis
   const convNameBase = 'res' + stage + block + '_branch'
@@ -81,7 +83,7 @@ function resNet50 (inputShape: number[], classess: number) {
 // const x = tf.randomNormal([3, 4, 4, 6])
 // const A = resnetBlock(x, 2, [2, 4, 6], 1, 'a', 2)
 
-const model = resNet50([32, 32, 3], 10)
+const model = resnetV2({ inputShape: [32, 32, 3], depth: 11 })
 
 const optimizer = tf.train.adam()
 model.compile({
@@ -101,7 +103,7 @@ async function train (data: Cifar10) {
   const history = await model.fit(
     x.reshape([50000, 32, 32, 3]), y, {
       batchSize: 32,
-      epochs: 6,
+      epochs: 200,
       callbacks: {
         onBatchEnd: (epoch: number, log) => {
           console.log('batch:', epoch, log)
