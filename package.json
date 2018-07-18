@@ -40,6 +40,7 @@
     "echarts": "^4.1.0",
     "node-fetch": "^2.1.2",
     "style-loader": "^0.21.0",
-    "tfjs-applications": "^0.1.1"
+    "tfjs-applications": "^0.1.1",
+    "tfjs-cifar10-web": "^1.1.0"
   }
 }

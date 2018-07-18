@@ -27,6 +27,14 @@ module.exports = function (env) {
         }
       }, 
       {
+        type: 'javascript/auto',
+        test: /\.(json)$/,
+        exclude: /node_modules/,
+        loader: [
+          `file-loader?publicPath=./&name=[name].[ext]`
+        ]
+      },
+      {
         test: /\.ts$/,
         exclude: /node_modules/,
         loader: 'ts-loader',
@@ -42,9 +50,8 @@ module.exports = function (env) {
       },
       {
         test: /\.(jpg|jpeg|gif|png)$/,
-        exclude: /node_modules/,
         loader: [
-          `url-loader?limit=4112&publicPath=/`
+          `url-loader?limit=4112&publicPath=./&name=[name].[ext]`
         ]
       },
       {
