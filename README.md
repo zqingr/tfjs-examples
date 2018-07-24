@@ -6,6 +6,7 @@
 Trains a simple deep multi-layer perceptron on the MNIST dataset.  
 [mnist_cnn](src/examples/mnist_cnn/index.ts) Trains a simple convnet on the MNIST dataset.  
 [cifar10_cnn](src/examples/cifar10_cnn/index.ts) Trains a simple deep CNN on the CIFAR10 small images dataset.  
+[cifar10_resnet](src/examples/cifar10_resnet/index.ts) Trains resnet on the CIFAR10 small images dataset.  
 
 # How to use
 
