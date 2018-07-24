@@ -31,7 +31,7 @@ module.exports = function (env) {
         test: /\.(json)$/,
         exclude: /node_modules/,
         loader: [
-          `file-loader?publicPath=./&name=[name].[ext]`
+          `file-loader?publicPath=/&name=[name].[ext]`
         ]
       },
       {
@@ -51,7 +51,7 @@ module.exports = function (env) {
       {
         test: /\.(jpg|jpeg|gif|png)$/,
         loader: [
-          `url-loader?limit=4112&publicPath=./&name=[name].[ext]`
+          `url-loader?limit=4112&publicPath=/&name=[name].[ext]`
         ]
       },
       {

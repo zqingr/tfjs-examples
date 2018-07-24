@@ -4,7 +4,7 @@
 // 110 seconds per epoch.
 
 import * as tf from '@tensorflow/tfjs'
-import { Cifar10 } from '../../datasets/cifar10'
+import { Cifar10 } from 'tfjs-cifar10-web'
 import { ChartBatchLog, ChartEpochLog } from '../../utils/charts'
 
 const BATCH_SIZE = 32
@@ -67,7 +67,7 @@ async function train (data: Cifar10) {
   // with batches using the fit() method.
   const { xs: x, ys: y } = data.nextTrainBatch()
   const history = await model.fit(
-    x.reshape([50000, 32, 32, 3]), y, {
+    x.reshape([50000, 32, 32, 3]) as any, y as any, {
       batchSize: BATCH_SIZE,
       epochs: 6,
       callbacks: {
@@ -87,7 +87,7 @@ async function train (data: Cifar10) {
           console.log(epoch, log)
 
           const testBatch = data.nextTestBatch(2000)
-          const score = model.evaluate(testBatch.xs.reshape([2000, 32, 32, 3]), testBatch.ys)
+          const score = model.evaluate(testBatch.xs.reshape([2000, 32, 32, 3]) as any, testBatch.ys as any)
           console.timeEnd('Totol training time')
           score[0].print()
           score[1].print()
